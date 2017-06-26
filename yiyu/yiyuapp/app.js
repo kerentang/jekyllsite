@@ -1,4 +1,5 @@
-const app = require('koa')();
+const Koa = require('koa');
+const app = new Koa();
 // const router = require('koa-router')();
 const json = require('koa-json');
 const logger = require('koa-logger'); // 引入各种依赖
