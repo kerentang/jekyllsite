@@ -9,39 +9,39 @@
       </el-input>
     </el-row>
     <el-row type="flex" justify="center">
-        <button v-on:click="operator('clear')">AC</button>
-        <button v-on:click="operator('togglepre')">+/-</button>
-        <button v-on:click="operator('percentage')">%</button>
-        <button v-on:click="operator('divide')">/</button>
-        <button v-on:click="operator('mulpitly')">*</button>
+        <button v-on:click="operator">AC</button>
+        <button v-on:click="operator">+/-</button>
+        <button v-on:click="operator">%</button>
+        <button v-on:click="operator">/</button>
+        <button v-on:click="operator">*</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button v-on:click="typetoinput('7')">7</button>
-        <button v-on:click="typetoinput('8')">8</button>
-        <button v-on:click="typetoinput('9')">9</button>
-        <button v-on:click="operator('minus')">-</button>
-        <button v-on:click="operator('plus')">+</button>
+        <button v-on:click="typetoinput">7</button>
+        <button v-on:click="typetoinput">8</button>
+        <button v-on:click="typetoinput">9</button>
+        <button v-on:click="operator">-</button>
+        <button v-on:click="operator">+</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button v-on:click="typetoinput('4')">4</button>
-        <button v-on:click="typetoinput('5')">5</button>
-        <button v-on:click="typetoinput('6')">6</button>
-        <button v-on:click="operator('ltbkt')">(</button>
-        <button v-on:click="operator('rtbkt')">)</button>
+        <button v-on:click="typetoinput">4</button>
+        <button v-on:click="typetoinput">5</button>
+        <button v-on:click="typetoinput">6</button>
+        <button v-on:click="operator">(</button>
+        <button v-on:click="operator">)</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button v-on:click="typetoinput('1')">1</button>
-        <button v-on:click="typetoinput('2')">2</button>
-        <button v-on:click="typetoinput('3')">3</button>
-        <button v-on:click="operator('power')">x^2</button>
-        <button v-on:click="operator('cube')">x^3</button>
+        <button v-on:click="typetoinput">1</button>
+        <button v-on:click="typetoinput">2</button>
+        <button v-on:click="typetoinput">3</button>
+        <button v-on:click="operator">x^2</button>
+        <button v-on:click="operator">x^3</button>
     </el-row>
     <el-row type="flex" justify="center">
         <button>0</button>
-        <button v-on:click="operator('ln')">ln</button>
-        <button v-on:click="operator('log10')">log10</button>
-        <button v-on:click="typetoinput('.')">.</button>
-        <button v-on:click="operator('result')">=</button>
+        <button v-on:click="operator">ln</button>
+        <button v-on:click="operator">log10</button>
+        <button v-on:click="typetoinput">.</button>
+        <button v-on:click="operator">=</button>
     </el-row>
   </el-row>
 </template>
