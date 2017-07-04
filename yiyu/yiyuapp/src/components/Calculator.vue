@@ -4,59 +4,61 @@
       <h3>全国中学生第一套普通计算器</h3>
     </el-row>
     <el-row type="flex" justify="center">
-      <el-input type=text v-model="calculNum" readonly>
+      <el-input type=text :value="calculNum" readonly>
         <template slot="prepend">Result = </template>
       </el-input>
     </el-row>
     <el-row type="flex" justify="center">
-        <button v-on:click="operator">AC</button>
-        <button v-on:click="operator">+/-</button>
-        <button v-on:click="operator">%</button>
-        <button v-on:click="operator">/</button>
-        <button v-on:click="operator">*</button>
+      <span>计算提示：{{expression}}</span>
     </el-row>
     <el-row type="flex" justify="center">
-        <button v-on:click="typetoinput">7</button>
-        <button v-on:click="typetoinput">8</button>
-        <button v-on:click="typetoinput">9</button>
-        <button v-on:click="operator">-</button>
-        <button v-on:click="operator">+</button>
+        <button @click="operator">AC</button>
+        <button @click="operator">+/-</button>
+        <button @click="operator">%</button>
+        <button @click="operator">/</button>
+        <button @click="operator">*</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button v-on:click="typetoinput">4</button>
-        <button v-on:click="typetoinput">5</button>
-        <button v-on:click="typetoinput">6</button>
-        <button v-on:click="operator">(</button>
-        <button v-on:click="operator">)</button>
+        <button :value='7' @click="typetoinput">7</button>
+        <button :value='8' @click="typetoinput">8</button>
+        <button :value='9' @click="typetoinput">9</button>
+        <button @click="operator">-</button>
+        <button @click="operator">+</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button v-on:click="typetoinput">1</button>
-        <button v-on:click="typetoinput">2</button>
-        <button v-on:click="typetoinput">3</button>
-        <button v-on:click="operator">x^2</button>
-        <button v-on:click="operator">x^3</button>
+        <button :value='4' @click="typetoinput">4</button>
+        <button :value='5' @click="typetoinput">5</button>
+        <button :value='6' @click="typetoinput">6</button>
+        <button @click="operator">(</button>
+        <button @click="operator">)</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button>0</button>
-        <button v-on:click="operator">ln</button>
-        <button v-on:click="operator">log10</button>
-        <button v-on:click="typetoinput">.</button>
-        <button v-on:click="operator">=</button>
+        <button :value='1' @click="typetoinput">1</button>
+        <button :value='2' @click="typetoinput">2</button>
+        <button :value='3' @click="typetoinput">3</button>
+        <button @click="operator">x^2</button>
+        <button @click="operator">x^3</button>
+    </el-row>
+    <el-row type="flex" justify="center">
+        <button :value='0' @click="typetoinput">0</button>
+        <button @click="operator">ln</button>
+        <button @click="operator">log10</button>
+        <button :value='.' @click="typetoinput" disbled='isOneDot'>.</button>
+        <button @click="result">=</button>
     </el-row>
   </el-row>
 </template>
 <script>
-// let flag = false;
-let exp = '';
-let result = '';
-let ans = [];
-// let reg = /^[\D+]/g;
+
 export default {
   name: 'Calculator',
   data () {
     return {
       calculNum: 20
     }
+  },
+  computed: {
+    return this.$store.ans
   },
   methods: {
     // typetoinput (val) {
