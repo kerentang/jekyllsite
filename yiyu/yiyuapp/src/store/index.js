@@ -11,7 +11,7 @@ const state = {
   exp: '',
   total: null,
   operator: null,
-  ans: 0
+  ans: []
 }
 
 const store = new Vuex.Store({
