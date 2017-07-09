@@ -9,7 +9,7 @@
       </el-input>
     </el-row>
     <el-row type="flex" justify="center">
-      <span>计算提示：{{expression}}</span>
+      <span></span>
     </el-row>
     <el-row type="flex" justify="center">
         <button @click="operator('clear')">AC</button>
@@ -43,8 +43,8 @@
         <button :value='0' @click="typetoinput">0</button>
         <button @click="operator('ln')">ln</button>
         <button @click="operator('log10')">log10</button>
-        <button :value='.' @click="typetoinput" disbled='isOneDot'>.</button>
-        <button @click="operator('equalto')">=</button>
+        <button @click="operator('.')">.</button>
+        <button @click="calculate('equalto')">=</button>
     </el-row>
   </el-row>
 </template>
@@ -52,80 +52,30 @@
 
 export default {
   name: 'Calculator',
-  data () {
-    return {
-      calculNum: 20
+  // data () {
+  //   return {
+  //     calculNum: 20
+  //   }
+  // },
+  computed: {
+    calculNum () {
+      return this.$store.state.calculNum
     }
   },
-  computed: {
-    return this.$store.ans
-  },
   methods: {
-    // typetoinput (val) {
-    //   exp = exp + val
-    //   return exp
-    // },
-    // operator (type) {
-    //   result = exp
-    //   exp = parseFloat(exp);
-    //   switch (type) {
-    //     case 'clear':
-    //       this.calculNum = 0
-    //       ans = []
-    //       break;
-    //     case 'toggleminus':
-    //       this.calculNum = this.calculNum * (-1)
-    //       break;
-    //     case 'percentage':
-    //       this.calculNum = parseFloat(this.calculNum) / 100
-    //       break;
-    //     case 'divide':
-    //       result = result + '/'
-    //       ans.push('/')
-    //       break;
-    //     case 'mulpitly':
-    //       result = result + '*'
-    //       ans.push('*')
-    //       break;
-    //     case 'minus':
-    //       result = result + '-'
-    //       ans.push('-')
-    //       break;
-    //     case 'plus':
-    //       result = result + '+'
-    //       ans.push('+')
-    //       break;
-    //     case 'ltbkt':
-    //       result = result + '('
-    //       ans.push('(')
-    //       break;
-    //     case 'rtbkt':
-    //       result = result + ')'
-    //       ans.push(')')
-    //       break;
-    //     case 'power':
-    //       this.calculNum = Math.pow(this.calcuNum, 3)
-    //       break;
-    //     case 'cube':
-    //       this.calculNum = Math.pow(this.calcuNum, 3)
-    //       break;
-    //     case 'ln':
-    //       this.calculNum = this.calculNum = Math.log(this.calculNum)
-    //       break;
-    //     case 'log10':
-    //       this.calculNum = Math.log(this.calculNum) / Math.log(10)
-    //       break;
-    //     case 'result':
-    //       if (exp !== null || exp !== '') { // 判断exp
-    //         this.calculNum = exp
-    //       } else {
-    //         this.calculNum = 0
-    //       }
-    //       break;
-    //   }
-    //   ans.push(this.calculNum)
-    //   exp = ''
-    // }
+    typetoinput (e) {
+      console.log(e.target.value)
+      return this.$store.dispatch('typetoinput', e.target.value)
+    },
+    operator (opt) {
+      console.log(opt)
+      return this.$store.dispatch('operator', opt)
+    },
+    calculate (opt) {
+      this.$store.dispatch('operator', opt)
+      console.log(opt)
+      return this.$store.dispatch('calculate', opt)
+    }
   }
 }
 </script>
