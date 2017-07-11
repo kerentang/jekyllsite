@@ -73,13 +73,14 @@ export default {
           break;
       }
       state.total = state.calculNum
-      // state.ans.push(state.calculNum)
+      // state.ans.push(state.total)
     }
-    // state.ans.push(state.calculNum)
+    state.ans.pop()
+    state.ans.push(state.total)
   },
   CALCULATE_ANS (state) {
     // let bkt = []
-    state.ans.push(state.total)
+    // state.ans.push(state.total)
     // state.total = state.calculNum
     // state.ans.push(state.total)
     if (state.operator !== null) {
@@ -149,9 +150,7 @@ export default {
           state.calculNum = state.ans.reduce((x, y) => {
             return x + y
           })
-          state.exp = ''
-          state.total = null
-          state.ans = []
+          state.ans.push(state.calculNum)
           break;
       }
     }
