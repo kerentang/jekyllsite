@@ -15,35 +15,35 @@
         <button @click="operator('clear')">AC</button>
         <button @click="operator('toggleminus')">+/-</button>
         <button @click="operator('percentage')">%</button>
-        <button @click="operator('divide')">/</button>
-        <button @click="operator('mulpitly')">*</button>
+        <button @click="calculate('divide')">/</button>
+        <button @click="calculate('mulpitly')">*</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button :value='7' @click="typetoinput">7</button>
-        <button :value='8' @click="typetoinput">8</button>
-        <button :value='9' @click="typetoinput">9</button>
-        <button @click="operator('minus')">-</button>
-        <button @click="operator('plus')">+</button>
+        <button @click="typetoinput('7')">7</button>
+        <button @click="typetoinput('8')">8</button>
+        <button @click="typetoinput('9')">9</button>
+        <button @click="calculate('minus')">-</button>
+        <button @click="calculate('plus')">+</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button :value='4' @click="typetoinput">4</button>
-        <button :value='5' @click="typetoinput">5</button>
-        <button :value='6' @click="typetoinput">6</button>
+        <button @click="typetoinput('4')">4</button>
+        <button @click="typetoinput('5')">5</button>
+        <button @click="typetoinput('6')">6</button>
         <button @click="operator('ltbkt')">(</button>
         <button @click="operator('rtbkt')">)</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button :value='1' @click="typetoinput">1</button>
-        <button :value='2' @click="typetoinput">2</button>
-        <button :value='3' @click="typetoinput">3</button>
+        <button @click="typetoinput('1')">1</button>
+        <button @click="typetoinput('2')">2</button>
+        <button @click="typetoinput('3')">3</button>
         <button @click="operator('power2')">x^2</button>
         <button @click="operator('cube')">x^3</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button :value='0' @click="typetoinput">0</button>
+        <button @click="typetoinput('0')">0</button>
         <button @click="operator('ln')">ln</button>
         <button @click="operator('log10')">log10</button>
-        <button @click="operator('.')">.</button>
+        <button @click="typetoinput('.')">.</button>
         <button @click="calculate('equalto')">=</button>
     </el-row>
   </el-row>
@@ -63,9 +63,9 @@ export default {
     }
   },
   methods: {
-    typetoinput (e) {
-      console.log(e.target.value)
-      return this.$store.dispatch('typetoinput', e.target.value)
+    typetoinput (opt) {
+      console.log(opt)
+      return this.$store.dispatch('typetoinput', opt)
     },
     operator (opt) {
       console.log(opt)

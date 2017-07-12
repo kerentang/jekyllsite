@@ -1,6 +1,11 @@
 export default {
   typetoinput ({commit}, value) {
-    let intvalue = parseFloat(value)
+    let intvalue
+    if (value !== '.') {
+      intvalue = parseFloat(value)
+    } else {
+      intvalue = value
+    }
     commit('TYPE_NUM', intvalue)
   },
   operator ({commit}, opt) {
