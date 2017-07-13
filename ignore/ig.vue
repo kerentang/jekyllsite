@@ -4,7 +4,7 @@
       <h3>全国中学生第一套普通计算器</h3>
     </el-row>
     <el-row type="flex" justify="center">
-      <el-input type=text v-model="calculNum" readonly>
+      <el-input type=text :value="calculNum" readonly>
         <template slot="prepend">Result = </template>
       </el-input>
     </el-row>
@@ -15,15 +15,15 @@
         <button @click="operator('clear')">AC</button>
         <button @click="operator('toggleminus')">+/-</button>
         <button @click="operator('percentage')">%</button>
-        <button @click="operator('divide')">/</button>
-        <button @click="operator('mulpitly')">*</button>
+        <button @click="calculate('divide')">/</button>
+        <button @click="calculate('mulpitly')">*</button>
     </el-row>
     <el-row type="flex" justify="center">
         <button @click="typetoinput('7')">7</button>
         <button @click="typetoinput('8')">8</button>
         <button @click="typetoinput('9')">9</button>
-        <button @click="operator('minus')">-</button>
-        <button @click="operator('plus')">+</button>
+        <button @click="calculate('minus')">-</button>
+        <button @click="calculate('plus')">+</button>
     </el-row>
     <el-row type="flex" justify="center">
         <button @click="typetoinput('4')">4</button>
@@ -44,7 +44,7 @@
         <button @click="operator('ln')">ln</button>
         <button @click="operator('log10')">log10</button>
         <button @click="typetoinput('.')">.</button>
-        <button @click="calculate">=</button>
+        <button @click="calculate('equalto')">=</button>
     </el-row>
   </el-row>
 </template>
@@ -52,76 +52,29 @@
 
 export default {
   name: 'Calculator',
-  data () {
-    return {
-      calculNum: 0,
-      exp: '',
-      result: '',
-      s1: [],
-      s2:[],
-      s3: [],
-      operator: null,
-      signOpe: [["+","-"],["*","/"]]
-    }
-  },
+  // data () {
+  //   return {
+  //     calculNum: 20
+  //   }
+  // },
   computed: {
     calculNum () {
-      
+      return this.$store.state.calculNum
     }
   },
   methods: {
-    typetoinput (value) {
-      let initvalue
-      if (value !== '.') {
-        initvalue = parseFloat(value)
-      } else {
-        initvalue = value
-      }
-      if (initvalue === '.' && this.exp.indexOf('.') > -1) {
-        this.exp = this.exp
-      } else {
-        this.exp = this.exp + initvalue
-      }
-      this.exp !== '' ? this.calculNum = parseFloat(this.exp) : this.calculNum = 0
+    typetoinput (opt) {
+      console.log(opt)
+      return this.$store.dispatch('typetoinput', opt)
     },
     operator (opt) {
-      this.operator = opt
-        switch (this.operator) {
-          case 'clear':
-            this.calculNum: 0,
-            this.exp: '',
-            this.result: '',
-            this.s1: [],
-            this.s2:[],
-            this.s3: [],
-            this.operator: null,
-            break;
-          case 'toggleminus':
-            this.calculNum = (-1) * this.calculNum
-            break;
-          case 'percentage':
-            this.calculNum = this.calculNum / 100
-            break;
-          case 'power2':
-            this.calculNum = Math.pow(this.calculNum, 2)
-            break;
-          case 'cube':
-            this.calculNum = Math.pow(this.calculNum, 3)
-            break;
-          case 'ln':
-            this.calculNum = Math.log(this.calculNum)
-            break;
-          case 'log10':
-            this.calculNum = Math.log(this.calculNum) / Math.log(10)
-            break;
-        }
-        this.s1.push(this.calculNum)
+      console.log(opt)
+      return this.$store.dispatch('operator', opt)
     },
-    calculate () {
-
-    },
-    checkOperator (ope1, ope2) {
-      
+    calculate (opt) {
+      this.$store.dispatch('operator', opt)
+      console.log(opt)
+      return this.$store.dispatch('calculate', opt)
     }
   }
 }
