@@ -15,22 +15,22 @@
         <button @click="typeoperator('clear')">AC</button>
         <button @click="typeoperator('toggleminus')">+/-</button>
         <button @click="typeoperator('percentage')">%</button>
-        <button @click="typeoperator('divide')">/</button>
-        <button @click="typeoperator('mulpitly')">*</button>
+        <button @click="typeoperator('/')">/</button>
+        <button @click="typeoperator('*')">*</button>
     </el-row>
     <el-row type="flex" justify="center">
         <button @click="typetoinput('7')">7</button>
         <button @click="typetoinput('8')">8</button>
         <button @click="typetoinput('9')">9</button>
-        <button @click="typeoperator('minus')">-</button>
-        <button @click="typeoperator('plus')">+</button>
+        <button @click="typeoperator('-')">-</button>
+        <button @click="typeoperator('+')">+</button>
     </el-row>
     <el-row type="flex" justify="center">
         <button @click="typetoinput('4')">4</button>
         <button @click="typetoinput('5')">5</button>
         <button @click="typetoinput('6')">6</button>
-        <button @click="typeoperator('ltbkt')">(</button>
-        <button @click="typeoperator('rtbkt')">)</button>
+        <button @click="typeoperator('(')">(</button>
+        <button @click="typeoperator(')')">)</button>
     </el-row>
     <el-row type="flex" justify="center">
         <button @click="typetoinput('1')">1</button>
@@ -44,7 +44,7 @@
         <button @click="typeoperator('ln')">ln</button>
         <button @click="typeoperator('log10')">log10</button>
         <button @click="typetoinput('.')">.</button>
-        <button @click="calculate()">=</button>
+        <button @click="typeoperator('=')">=</button>
     </el-row>
   </el-row>
 </template>
@@ -60,56 +60,61 @@ export default {
       s2: [],
       s3: [],
       operator: null,
+      result: '',
       signOpe: [['+', '-'], ['*', '/']]
     }
   },
   // computed: {
   // },
   methods: {
-    calculate () {
-      this.s2 = []
-      this.exp = ''
-      // let temp = []
-      for (let i = 0; i < this.s1.length; i++) {
-        if (/\d+/.test(this.s1[i])) {
-          this.s3.push(parseFloat(this.s1[i]))
-          console.log('这是数字' + this.s3[i])
-        } else {
-          switch (this.s1[i]) {
-            case '+':
-              this.s3.push(parseFloat(this.s3.pop()) + parseFloat(this.s3.pop()))
-              break;
-            case '-':
-              this.s3.push(parseFloat(this.s3.pop()) - parseFloat(this.s3.pop()))
-              break;
-            case '*':
-              this.s3.push(parseFloat(this.s3.pop()) * parseFloat(this.s3.pop()))
-              break;
-            case '/':
-              this.s3.push(parseFloat(this.s3.pop()) / parseFloat(this.s3.pop()))
-              break;
-          }
-          console.log('这是运算' + this.s3[i])
-        }
-      }
-      this.s1 = []
-      if (this.s3.length === 1) {
-        if (isNaN(this.s3[0])) {
-          this.$message('非法操作！')
-          this.s3 = []
-        } else {
-          this.calculNum = this.s3[0]
-        }
-      } else {
-        let total = this.s3[0] + this.s3[1]
-        if (isNaN(this.s3[0])) {
-          this.$message('非法操作！')
-          this.s3 = []
-        } else {
-          this.calculNum = total
-        }
-      }
-    },
+    // calculate (opt) {
+    //   this.operator = opt
+    //   this.s1.push(this.calculNum)
+    //   console.log(this.s1)
+    //   this.s2 = []
+    //   this.exp = ''
+    //   for (let i = 0; i < this.s1.length; i++) {
+    //     if (/\d+/.test(parseFloat(this.s1[i]))) {
+    //       this.s3.push(parseFloat(this.s1[i]))
+    //       console.log('这是s1队列中的数字 ' + this.s3[i])
+    //     } else {
+    //       switch (this.s1[i]) {
+    //         case '+':
+    //           this.s3.push(parseFloat(this.s3.pop()) + parseFloat(this.s3.pop()))
+    //           break;
+    //         case '-':
+    //           this.s3.push(parseFloat(this.s3.pop()) - parseFloat(this.s3.pop()))
+    //           break;
+    //         case '*':
+    //           this.s3.push(parseFloat(this.s3.pop()) * parseFloat(this.s3.pop()))
+    //           break;
+    //         case '/':
+    //           this.s3.push(parseFloat(this.s3.pop()) / parseFloat(this.s3.pop()))
+    //           break;
+    //       }
+    //       console.log('这是双目运算后的s3: ' + this.s3)
+    //       console.log('这是运算 ' + this.s3[i])
+    //     }
+    //   }
+    //   this.s1 = []
+    //   if (this.s3.length === 1) {
+    //     if (isNaN(this.s3[0])) {
+    //       this.$message('非法操作！')
+    //       this.s3 = []
+    //     } else {
+    //       this.calculNum = this.s3[0]
+    //     }
+    //   } else {
+    //     let total = this.s3[0] + this.s3[1]
+    //     if (isNaN(this.s3[0])) {
+    //       this.$message('非法操作！')
+    //       this.s3 = []
+    //     } else {
+    //       this.calculNum = total
+    //     }
+    //   }
+    //   console.log('这是最终的结果: ' + this.total)
+    // },
     typetoinput (value) {
       let initvalue
       if (value !== '.') {
@@ -126,53 +131,110 @@ export default {
     },
     typeoperator (opt) {
       this.operator = opt
-      switch (this.operator) {
-        case 'clear':
-          this.calculNum = 0
-          this.exp = ''
-          this.s1 = []
-          this.s2 = []
-          this.s3 = []
-          this.operator = null
-          break;
-        case 'toggleminus':
-          this.calculNum = (-1) * this.calculNum
-          break;
-        case 'percentage':
-          this.calculNum = this.calculNum / 100
-          break;
-        case 'power2':
-          this.calculNum = Math.pow(this.calculNum, 2)
-          break;
-        case 'cube':
-          this.calculNum = Math.pow(this.calculNum, 3)
-          break;
-        case 'ln':
-          this.calculNum = Math.log(this.calculNum)
-          break;
-        case 'log10':
-          this.calculNum = Math.log(this.calculNum) / Math.log(10)
-          break;
-      }
-      this.s1.push(this.calculNum)
-      console.log(s1)
-      this.exp = ''
+      // console.log(this.operator)
+      // this.result =this.result + this.calculNum + this.operator
       if (this.operator === '+' || this.operator === '-' || this.operator === '*' || this.operator === '/') {
         if (this.s2.length === 0) {
           this.s2.push(this.operator)
+          console.log('s2长度为0是push进来的 ' + this.s2)
         } else {
           let curOpe = this.operator
           let s2TopOpe = this.s2[this.s2.length - 1]
           if (this.checkOperator(curOpe, s2TopOpe)) {
             this.s2.push(curOpe)
+            console.log('这是s2长度不为0且当前优先级大于栈顶操作符时的s2 ' + this.s2)
           } else {
             while (!this.checkOperator(curOpe, s2TopOpe) && this.s2.length !== 0) {
               this.s1.push(this.s2.pop())
+              console.log('这是s2长度不为0且当前优先级小于栈顶操作符时的s2 ' + this.s2)
             }
             this.s2.push(curOpe)
+            console.log('这是已经判断过优先级的s2 ' + this.s2)
           }
         }
+      } else if (this.operator === '=') {
+        this.s2 = []
+        this.exp = ''
+        this.s1.push(this.calculNum)
+        for (let i = 0; i < this.s1.length; i++) {
+          if (/\d+/.test(parseFloat(this.s1[i]))) {
+            this.s3.push(parseFloat(this.s1[i]))
+            console.log('这是s1队列中的数字 ' + this.s3[i])
+          } else {
+            switch (this.s1[i]) {
+              case '+':
+                this.s3.push(parseFloat(this.s3.pop()) + parseFloat(this.s3.pop()))
+                break;
+              case '-':
+                this.s3.push(parseFloat(this.s3.pop()) - parseFloat(this.s3.pop()))
+                break;
+              case '*':
+                this.s3.push(parseFloat(this.s3.pop()) * parseFloat(this.s3.pop()))
+                break;
+              case '/':
+                this.s3.push(parseFloat(this.s3.pop()) / parseFloat(this.s3.pop()))
+                break;
+            }
+            console.log('这是双目运算后的s3: ' + this.s3)
+            console.log('这是运算 ' + this.s3[i])
+          }
+        }
+        this.s1 = []
+        if (this.s3.length === 1) {
+          if (isNaN(this.s3[0])) {
+            this.$message('非法操作！')
+            this.s3 = []
+          } else {
+            this.calculNum = this.s3[0]
+          }
+        } else {
+          let total = this.s3[0] + this.s3[1]
+          if (isNaN(this.s3[0])) {
+            this.$message('非法操作！')
+            this.s3 = []
+          } else {
+            this.calculNum = total
+          }
+        }
+        console.log('这是最终的结果: ' + this.total)
+      } else {
+        switch (this.operator) {
+          case 'clear':
+            this.calculNum = 0
+            this.exp = ''
+            this.s1 = []
+            this.s2 = []
+            this.s3 = []
+            this.operator = null
+            break;
+          case 'toggleminus':
+            this.calculNum = (-1) * this.calculNum
+            break;
+          case 'percentage':
+            this.calculNum = this.calculNum / 100
+            break;
+          case 'power2':
+            this.calculNum = Math.pow(this.calculNum, 2)
+            break;
+          case 'cube':
+            this.calculNum = Math.pow(this.calculNum, 3)
+            break;
+          case 'ln':
+            this.calculNum = Math.log(this.calculNum)
+            break;
+          case 'log10':
+            this.calculNum = Math.log(this.calculNum) / Math.log(10)
+            break;
+        }
+        // this.total = this.calculNum
+        this.calculNum = this.calculNum
+        this.s1.push(this.calculNum)
       }
+      // this.total = this.calculNum
+      // this.s1.push(this.calculNum)
+      console.log('进行过单双目运算符判断的s1: ' + this.s1)
+      console.log('s2: ' + this.s2)
+      this.exp = ''
     },
     checkOperator (curOpe, s2Ope) {
       let index1
@@ -180,8 +242,10 @@ export default {
       for (let i in this.signOpe) {
         if (this.signOpe[i].indexOf(curOpe) > -1) {
           index1 = i
+          console.log('当前操作符index1为 ' + index1)
         } else if (this.signOpe[i].indexOf(s2Ope) > -1) {
           index2 = i
+          console.log('栈顶操作符index2为 ' + index2)
         }
       }
       if (index1 > index2) {
