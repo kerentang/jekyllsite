@@ -64,57 +64,7 @@ export default {
       signOpe: [['+', '-'], ['*', '/']]
     }
   },
-  // computed: {
-  // },
   methods: {
-    // calculate (opt) {
-    //   this.operator = opt
-    //   this.s1.push(this.calculNum)
-    //   console.log(this.s1)
-    //   this.s2 = []
-    //   this.exp = ''
-    //   for (let i = 0; i < this.s1.length; i++) {
-    //     if (/\d+/.test(parseFloat(this.s1[i]))) {
-    //       this.s3.push(parseFloat(this.s1[i]))
-    //       console.log('这是s1队列中的数字 ' + this.s3[i])
-    //     } else {
-    //       switch (this.s1[i]) {
-    //         case '+':
-    //           this.s3.push(parseFloat(this.s3.pop()) + parseFloat(this.s3.pop()))
-    //           break;
-    //         case '-':
-    //           this.s3.push(parseFloat(this.s3.pop()) - parseFloat(this.s3.pop()))
-    //           break;
-    //         case '*':
-    //           this.s3.push(parseFloat(this.s3.pop()) * parseFloat(this.s3.pop()))
-    //           break;
-    //         case '/':
-    //           this.s3.push(parseFloat(this.s3.pop()) / parseFloat(this.s3.pop()))
-    //           break;
-    //       }
-    //       console.log('这是双目运算后的s3: ' + this.s3)
-    //       console.log('这是运算 ' + this.s3[i])
-    //     }
-    //   }
-    //   this.s1 = []
-    //   if (this.s3.length === 1) {
-    //     if (isNaN(this.s3[0])) {
-    //       this.$message('非法操作！')
-    //       this.s3 = []
-    //     } else {
-    //       this.calculNum = this.s3[0]
-    //     }
-    //   } else {
-    //     let total = this.s3[0] + this.s3[1]
-    //     if (isNaN(this.s3[0])) {
-    //       this.$message('非法操作！')
-    //       this.s3 = []
-    //     } else {
-    //       this.calculNum = total
-    //     }
-    //   }
-    //   console.log('这是最终的结果: ' + this.total)
-    // },
     typetoinput (value) {
       let initvalue
       if (value !== '.') {
@@ -131,8 +81,6 @@ export default {
     },
     typeoperator (opt) {
       this.operator = opt
-      // console.log(this.operator)
-      // this.result =this.result + this.calculNum + this.operator
       if (this.operator === '+' || this.operator === '-' || this.operator === '*' || this.operator === '/') {
         if (this.s2.length === 0) {
           this.s2.push(this.operator)
