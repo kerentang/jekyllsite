@@ -4,7 +4,7 @@
       <h3>全国中学生第一套普通计算器</h3>
     </el-row>
     <el-row type="flex" justify="center">
-      <el-input type=text v-model="calculNum" readonly>
+      <el-input type=text v-model.trim="calculNum" readonly>
         <template slot="prepend">Result = </template>
       </el-input>
     </el-row>
@@ -12,20 +12,22 @@
       <span></span>
     </el-row>
     <el-row type="flex" justify="center">
-        <button @click="typeoperator('clear')">AC</button>
-        <button @click="typeoperator('toggleminus')">+/-</button>
+        <input-num :value='num' v-for="num in nums" :key='num' v-on:getNum='typeExp'></input-num>
+        <!-- <button @click="typeoperator('clear')">AC</button> -->
+        <!-- <button @click="typeoperator('toggleminus')">+/-</button>
         <button @click="typeoperator('percentage')">%</button>
         <button @click="typeoperator('/')">/</button>
-        <button @click="typeoperator('*')">*</button>
+        <button @click="typeoperator('*')">*</button> -->
     </el-row>
     <el-row type="flex" justify="center">
-        <button @click="typetoinput('7')">7</button>
+        <input-single-operator :value='singleOpe' v-for="singleOpe in singleOpes" :key='singleOpe' v-on:getSingleOpe='typeSingleOpe'></input-single-operator>
+        <!-- <button @click="typetoinput('7')">7</button>
         <button @click="typetoinput('8')">8</button>
         <button @click="typetoinput('9')">9</button>
         <button @click="typeoperator('-')">-</button>
-        <button @click="typeoperator('+')">+</button>
+        <button @click="typeoperator('+')">+</button> -->
     </el-row>
-    <el-row type="flex" justify="center">
+    <!-- <el-row type="flex" justify="center">
         <button @click="typetoinput('4')">4</button>
         <button @click="typetoinput('5')">5</button>
         <button @click="typetoinput('6')">6</button>
@@ -45,13 +47,29 @@
         <button @click="typeoperator('log10')">log10</button>
         <button @click="typetoinput('.')">.</button>
         <button @click="typeoperator('=')">=</button>
-    </el-row>
+    </el-row> -->
   </el-row>
 </template>
 <script>
 
 export default {
   name: 'Calculator',
+  components: {
+    'input-num': {
+      props: ['value'],
+      template: '<button v-on:click="getNum">{{value}}</button>',
+      methods: {
+        getNum () {}
+      }
+    },
+    'input-single-operator': {
+      props: ['value'],
+      template: '<button v-on:click="getSingleOpe">{{value}}</button>',
+      methods: {
+        getSingleOpe () {}
+      }
+    }
+  },
   data () {
     return {
       calculNum: 0,
@@ -61,10 +79,14 @@ export default {
       s3: [],
       operator: null,
       result: '',
-      signOpe: [['+', '-'], ['*', '/']]
+      signOpe: [['+', '-'], ['*', '/']],
+      nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.'],
+      singleOpes: ['+/-', '%', 'x2', 'x3', 'ln', 'log10', 10]
     }
   },
   methods: {
+    typeExp () {},
+    typeSingleOpe () {},
     typetoinput (value) {
       let initvalue
       if (value !== '.') {
