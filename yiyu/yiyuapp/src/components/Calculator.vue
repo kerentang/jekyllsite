@@ -13,41 +13,13 @@
     </el-row>
     <el-row type="flex" justify="center">
         <input-num :value='num' v-for="num in nums" :key='num' v-on:getNum='typeExp'></input-num>
-        <!-- <button @click="typeoperator('clear')">AC</button> -->
-        <!-- <button @click="typeoperator('toggleminus')">+/-</button>
-        <button @click="typeoperator('percentage')">%</button>
-        <button @click="typeoperator('/')">/</button>
-        <button @click="typeoperator('*')">*</button> -->
     </el-row>
     <el-row type="flex" justify="center">
         <input-single-operator :value='singleOpe' v-for="singleOpe in singleOpes" :key='singleOpe' v-on:getSingleOpe='typeSingleOpe'></input-single-operator>
-        <!-- <button @click="typetoinput('7')">7</button>
-        <button @click="typetoinput('8')">8</button>
-        <button @click="typetoinput('9')">9</button>
-        <button @click="typeoperator('-')">-</button>
-        <button @click="typeoperator('+')">+</button> -->
-    </el-row>
-    <!-- <el-row type="flex" justify="center">
-        <button @click="typetoinput('4')">4</button>
-        <button @click="typetoinput('5')">5</button>
-        <button @click="typetoinput('6')">6</button>
-        <button @click="typeoperator('(')">(</button>
-        <button @click="typeoperator(')')">)</button>
     </el-row>
     <el-row type="flex" justify="center">
-        <button @click="typetoinput('1')">1</button>
-        <button @click="typetoinput('2')">2</button>
-        <button @click="typetoinput('3')">3</button>
-        <button @click="typeoperator('power2')">x^2</button>
-        <button @click="typeoperator('cube')">x^3</button>
+        <input-bi-operator :value='biOpe' v-for="biOpe in biOpes" :key='biOpe' v-on:getBiOpe='typeBiOpe'></input-bi-operator>
     </el-row>
-    <el-row type="flex" justify="center">
-        <button @click="typetoinput('0')">0</button>
-        <button @click="typeoperator('ln')">ln</button>
-        <button @click="typeoperator('log10')">log10</button>
-        <button @click="typetoinput('.')">.</button>
-        <button @click="typeoperator('=')">=</button>
-    </el-row> -->
   </el-row>
 </template>
 <script>
@@ -68,6 +40,13 @@ export default {
       methods: {
         getSingleOpe () {}
       }
+    },
+    'input-bi-operator': {
+      props: ['value'],
+      template: '<button v-on:click="getBiOpe">{{value}}</button>',
+      methods: {
+        getBiOpe () {}
+      }
     }
   },
   data () {
@@ -81,12 +60,14 @@ export default {
       result: '',
       signOpe: [['+', '-'], ['*', '/']],
       nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.'],
-      singleOpes: ['+/-', '%', 'x2', 'x3', 'ln', 'log10', 10]
+      singleOpes: ['+/-', '%', 'x2', 'x3', 'ln', 'log10', 'AC'],
+      biOpes: ['(', ')', '+', '-', '*', '/', '=']
     }
   },
   methods: {
     typeExp () {},
     typeSingleOpe () {},
+    typeBiOpe () {},
     typetoinput (value) {
       let initvalue
       if (value !== '.') {
