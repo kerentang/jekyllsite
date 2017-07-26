@@ -4,7 +4,7 @@
       <h3>全国中学生第一套普通计算器</h3>
     </el-row>
     <el-row type="flex" justify="center">
-      <el-input type=text v-model.trim="calculNum" readonly>
+      <el-input type=text v-bind:value="calculNum" readonly>
         <template slot="prepend">Result = </template>
       </el-input>
     </el-row>
@@ -45,18 +45,13 @@ export default {
       }
     },
     'input-single-operator': {
-      data: function () {
-        return {
-          sop: ''
-        }
-      },
       props: ['value'],
       template: '<button v-on:click="getSingleOpe(value)">{{value}}</button>',
       methods: {
         getSingleOpe: function (value) {
-          this.sop = value
-          console.log(this.sop)
-          this.$emit('getSingleOpe', this.sop)
+          // this.sop = value
+          console.log(value)
+          this.$emit('getSingleOpe', value)
         }
       }
     },
@@ -66,13 +61,14 @@ export default {
       methods: {
         getBiOpe: function (value) {
           console.log(value)
+          this.$emit('getBiOpe', value)
         }
       }
     }
   },
   data () {
     return {
-      calculNum: 0,
+      // calculNum: 0,
       exp: '',
       s1: [],
       s2: [],
@@ -81,138 +77,145 @@ export default {
       result: '',
       signOpe: [['+', '-'], ['*', '/']],
       nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.'],
-      singleOpes: ['+/-', '%', 'x2', 'x3', 'ln', 'log10', 'AC'],
+      singleOpes: ['+/-', '%', 'x^2', 'x^3', 'ln', 'log10', 'AC'],
       biOpes: ['(', ')', '+', '-', '*', '/', '=']
+    }
+  },
+  computed: {
+    calculNum: function () {
+      let reg = /^\d+(?:\.\d)?$/g
+      let initvalue = parseFloat(this.exp)
+      if (reg.test(this.exp)) {
+        initvalue = parseFloat(this.exp)
+        console.log('this is if ' + this.exp)
+      } else {
+        initvalue = this.exp
+        console.log('this is else ' + this.exp)
+      }
+      return initvalue
     }
   },
   methods: {
     typeExp (data) {
-      this.exp += data
+      if (this.exp.indexOf('.') > -1 && data === '.') {
+        this.exp = this.exp
+      } else {
+        this.exp += data
+      }
       console.log(this.exp)
     },
     typeSingleOpe (data) {
       this.operator = data
       console.log(this.operator)
     },
-    typeBiOpe () {},
-    typetoinput (value) {
-      let initvalue
-      if (value !== '.') {
-        initvalue = parseFloat(value)
-      } else {
-        initvalue = value
-      }
-      if (initvalue === '.' && this.exp.indexOf('.') > -1) {
-        this.exp = this.exp
-      } else {
-        this.exp = this.exp + initvalue
-      }
-      this.exp !== '' ? this.calculNum = parseFloat(this.exp) : this.calculNum = this.calculNum
+    typeBiOpe (data) {
+      this.operator = data
+      console.log(this.operator)
     },
     typeoperator (opt) {
-      this.operator = opt
-      if (this.operator === '+' || this.operator === '-' || this.operator === '*' || this.operator === '/') {
-        if (this.s2.length === 0) {
-          this.s2.push(this.operator)
-          console.log('s2长度为0是push进来的 ' + this.s2)
-        } else {
-          let curOpe = this.operator
-          let s2TopOpe = this.s2[this.s2.length - 1]
-          if (this.checkOperator(curOpe, s2TopOpe)) {
-            this.s2.push(curOpe)
-            console.log('这是s2长度不为0且当前优先级大于栈顶操作符时的s2 ' + this.s2)
-          } else {
-            while (!this.checkOperator(curOpe, s2TopOpe) && this.s2.length !== 0) {
-              this.s1.push(this.s2.pop())
-              console.log('这是s2长度不为0且当前优先级小于栈顶操作符时的s2 ' + this.s2)
-            }
-            this.s2.push(curOpe)
-            console.log('这是已经判断过优先级的s2 ' + this.s2)
-          }
-        }
-      } else if (this.operator === '=') {
-        this.s2 = []
-        this.exp = ''
-        this.s1.push(this.calculNum)
-        for (let i = 0; i < this.s1.length; i++) {
-          if (/\d+/.test(parseFloat(this.s1[i]))) {
-            this.s3.push(parseFloat(this.s1[i]))
-            console.log('这是s1队列中的数字 ' + this.s3[i])
-          } else {
-            switch (this.s1[i]) {
-              case '+':
-                this.s3.push(parseFloat(this.s3.pop()) + parseFloat(this.s3.pop()))
-                break;
-              case '-':
-                this.s3.push(parseFloat(this.s3.pop()) - parseFloat(this.s3.pop()))
-                break;
-              case '*':
-                this.s3.push(parseFloat(this.s3.pop()) * parseFloat(this.s3.pop()))
-                break;
-              case '/':
-                this.s3.push(parseFloat(this.s3.pop()) / parseFloat(this.s3.pop()))
-                break;
-            }
-            console.log('这是双目运算后的s3: ' + this.s3)
-            console.log('这是运算 ' + this.s3[i])
-          }
-        }
-        this.s1 = []
-        if (this.s3.length === 1) {
-          if (isNaN(this.s3[0])) {
-            this.$message('非法操作！')
-            this.s3 = []
-          } else {
-            this.calculNum = this.s3[0]
-          }
-        } else {
-          let total = this.s3[0] + this.s3[1]
-          if (isNaN(this.s3[0])) {
-            this.$message('非法操作！')
-            this.s3 = []
-          } else {
-            this.calculNum = total
-          }
-        }
-        console.log('这是最终的结果: ' + this.total)
-      } else {
-        switch (this.operator) {
-          case 'clear':
-            this.calculNum = 0
-            this.exp = ''
-            this.s1 = []
-            this.s2 = []
-            this.s3 = []
-            this.operator = null
-            break;
-          case 'toggleminus':
-            this.calculNum = (-1) * this.calculNum
-            break;
-          case 'percentage':
-            this.calculNum = this.calculNum / 100
-            break;
-          case 'power2':
-            this.calculNum = Math.pow(this.calculNum, 2)
-            break;
-          case 'cube':
-            this.calculNum = Math.pow(this.calculNum, 3)
-            break;
-          case 'ln':
-            this.calculNum = Math.log(this.calculNum)
-            break;
-          case 'log10':
-            this.calculNum = Math.log(this.calculNum) / Math.log(10)
-            break;
-        }
-        // this.total = this.calculNum
-        this.calculNum = this.calculNum
-        this.s1.push(this.calculNum)
-      }
-      // this.total = this.calculNum
-      // this.s1.push(this.calculNum)
-      console.log('进行过单双目运算符判断的s1: ' + this.s1)
-      console.log('s2: ' + this.s2)
-      this.exp = ''
+      // this.operator = opt
+      // if (this.operator === '+' || this.operator === '-' || this.operator === '*' || this.operator === '/') {
+      //   if (this.s2.length === 0) {
+      //     this.s2.push(this.operator)
+      //     console.log('s2长度为0是push进来的 ' + this.s2)
+      //   } else {
+      //     let curOpe = this.operator
+      //     let s2TopOpe = this.s2[this.s2.length - 1]
+      //     if (this.checkOperator(curOpe, s2TopOpe)) {
+      //       this.s2.push(curOpe)
+      //       console.log('这是s2长度不为0且当前优先级大于栈顶操作符时的s2 ' + this.s2)
+      //     } else {
+      //       while (!this.checkOperator(curOpe, s2TopOpe) && this.s2.length !== 0) {
+      //         this.s1.push(this.s2.pop())
+      //         console.log('这是s2长度不为0且当前优先级小于栈顶操作符时的s2 ' + this.s2)
+      //       }
+      //       this.s2.push(curOpe)
+      //       console.log('这是已经判断过优先级的s2 ' + this.s2)
+      //     }
+      //   }
+      // } else if (this.operator === '=') {
+      //   this.s2 = []
+      //   this.exp = ''
+      //   this.s1.push(this.calculNum)
+      //   for (let i = 0; i < this.s1.length; i++) {
+      //     if (/\d+/.test(parseFloat(this.s1[i]))) {
+      //       this.s3.push(parseFloat(this.s1[i]))
+      //       console.log('这是s1队列中的数字 ' + this.s3[i])
+      //     } else {
+      //       switch (this.s1[i]) {
+      //         case '+':
+      //           this.s3.push(parseFloat(this.s3.pop()) + parseFloat(this.s3.pop()))
+      //           break;
+      //         case '-':
+      //           this.s3.push(parseFloat(this.s3.pop()) - parseFloat(this.s3.pop()))
+      //           break;
+      //         case '*':
+      //           this.s3.push(parseFloat(this.s3.pop()) * parseFloat(this.s3.pop()))
+      //           break;
+      //         case '/':
+      //           this.s3.push(parseFloat(this.s3.pop()) / parseFloat(this.s3.pop()))
+      //           break;
+      //       }
+      //       console.log('这是双目运算后的s3: ' + this.s3)
+      //       console.log('这是运算 ' + this.s3[i])
+      //     }
+      //   }
+      //   this.s1 = []
+      //   if (this.s3.length === 1) {
+      //     if (isNaN(this.s3[0])) {
+      //       this.$message('非法操作！')
+      //       this.s3 = []
+      //     } else {
+      //       this.calculNum = this.s3[0]
+      //     }
+      //   } else {
+      //     let total = this.s3[0] + this.s3[1]
+      //     if (isNaN(this.s3[0])) {
+      //       this.$message('非法操作！')
+      //       this.s3 = []
+      //     } else {
+      //       this.calculNum = total
+      //     }
+      //   }
+      //   console.log('这是最终的结果: ' + this.total)
+      // } else {
+      //   switch (this.operator) {
+      //     case 'clear':
+      //       this.calculNum = 0
+      //       this.exp = ''
+      //       this.s1 = []
+      //       this.s2 = []
+      //       this.s3 = []
+      //       this.operator = null
+      //       break;
+      //     case 'toggleminus':
+      //       this.calculNum = (-1) * this.calculNum
+      //       break;
+      //     case 'percentage':
+      //       this.calculNum = this.calculNum / 100
+      //       break;
+      //     case 'power2':
+      //       this.calculNum = Math.pow(this.calculNum, 2)
+      //       break;
+      //     case 'cube':
+      //       this.calculNum = Math.pow(this.calculNum, 3)
+      //       break;
+      //     case 'ln':
+      //       this.calculNum = Math.log(this.calculNum)
+      //       break;
+      //     case 'log10':
+      //       this.calculNum = Math.log(this.calculNum) / Math.log(10)
+      //       break;
+      //   }
+      //   // this.total = this.calculNum
+      //   this.calculNum = this.calculNum
+      //   this.s1.push(this.calculNum)
+      // }
+      // // this.total = this.calculNum
+      // // this.s1.push(this.calculNum)
+      // console.log('进行过单双目运算符判断的s1: ' + this.s1)
+      // console.log('s2: ' + this.s2)
+      // this.exp = ''
     },
     checkOperator (curOpe, s2Ope) {
       let index1
