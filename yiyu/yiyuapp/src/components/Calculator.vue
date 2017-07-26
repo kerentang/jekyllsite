@@ -12,13 +12,20 @@
       <span></span>
     </el-row>
     <el-row type="flex" justify="center">
-        <input-num :value='num' v-for="num in nums" :key='num' v-on:getNum='typeExp'></input-num>
+        <input-num :value='num' v-for="num in nums" :key='num' v-on:getNum='typeExp'>
+        </input-num>
     </el-row>
     <el-row type="flex" justify="center">
-        <input-single-operator :value='singleOpe' v-for="singleOpe in singleOpes" :key='singleOpe' v-on:getSingleOpe='typeSingleOpe'></input-single-operator>
+        <input-single-operator 
+          :value='singleOpe' 
+          v-for="singleOpe in singleOpes" 
+          :key='singleOpe' 
+          v-on:getSingleOpe='typeSingleOpe'>
+        </input-single-operator>
     </el-row>
     <el-row type="flex" justify="center">
-        <input-bi-operator :value='biOpe' v-for="biOpe in biOpes" :key='biOpe' v-on:getBiOpe='typeBiOpe'></input-bi-operator>
+        <input-bi-operator :value='biOpe' v-for="biOpe in biOpes" :key='biOpe' v-on:getBiOpe='typeBiOpe'>
+        </input-bi-operator>
     </el-row>
   </el-row>
 </template>
@@ -33,15 +40,23 @@ export default {
       methods: {
         getNum: function (value) {
           console.log(value)
+          this.$emit('getNum', value)
         }
       }
     },
     'input-single-operator': {
+      data: function () {
+        return {
+          sop: ''
+        }
+      },
       props: ['value'],
       template: '<button v-on:click="getSingleOpe(value)">{{value}}</button>',
       methods: {
         getSingleOpe: function (value) {
-          console.log(value)
+          this.sop = value
+          console.log(this.sop)
+          this.$emit('getSingleOpe', this.sop)
         }
       }
     },
@@ -71,8 +86,14 @@ export default {
     }
   },
   methods: {
-    typeExp () {},
-    typeSingleOpe () {},
+    typeExp (data) {
+      this.exp += data
+      console.log(this.exp)
+    },
+    typeSingleOpe (data) {
+      this.operator = data
+      console.log(this.operator)
+    },
     typeBiOpe () {},
     typetoinput (value) {
       let initvalue
