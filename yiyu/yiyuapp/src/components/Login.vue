@@ -8,7 +8,7 @@
           </el-input>
           <el-input  v-model="password" placeholder='密码' type='password'>
           </el-input>
-          <el-button type='primary' @click='loginYiYu'>登录</el-button>
+          <el-button type='primary' @click='loginYiYu'>不登录，直接查看计算器</el-button>
     </el-row>
     </el-col>
   </el-row>
