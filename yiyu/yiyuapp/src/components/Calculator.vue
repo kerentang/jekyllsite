@@ -29,23 +29,29 @@ export default {
   components: {
     'input-num': {
       props: ['value'],
-      template: '<button v-on:click="getNum">{{value}}</button>',
+      template: '<button v-on:click="getNum(value)">{{value}}</button>',
       methods: {
-        getNum () {}
+        getNum: function (value) {
+          console.log(value)
+        }
       }
     },
     'input-single-operator': {
       props: ['value'],
-      template: '<button v-on:click="getSingleOpe">{{value}}</button>',
+      template: '<button v-on:click="getSingleOpe(value)">{{value}}</button>',
       methods: {
-        getSingleOpe () {}
+        getSingleOpe: function (value) {
+          console.log(value)
+        }
       }
     },
     'input-bi-operator': {
       props: ['value'],
-      template: '<button v-on:click="getBiOpe">{{value}}</button>',
+      template: '<button v-on:click="getBiOpe(value)">{{value}}</button>',
       methods: {
-        getBiOpe () {}
+        getBiOpe: function (value) {
+          console.log(value)
+        }
       }
     }
   },
