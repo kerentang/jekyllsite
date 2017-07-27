@@ -68,7 +68,7 @@ export default {
   },
   data () {
     return {
-      // calculNum: 0,
+      calculNum: 0,
       exp: '',
       s1: [],
       s2: [],
@@ -81,18 +81,22 @@ export default {
       biOpes: ['(', ')', '+', '-', '*', '/', '=']
     }
   },
-  computed: {
-    calculNum: function () {
+  watch: {
+    exp: function (newexp) {
       let reg = /^\d+(?:\.\d)?$/g
-      let initvalue = parseFloat(this.exp)
-      if (reg.test(this.exp)) {
-        initvalue = parseFloat(this.exp)
-        console.log('this is if ' + this.exp)
+      this.calculNum = parseFloat(newexp)
+      if (reg.test(newexp)) {
+        this.calculNum = parseFloat(newexp)
+        console.log('this is if ' + newexp)
       } else {
-        initvalue = this.exp
-        console.log('this is else ' + this.exp)
+        this.calculNum = newexp
+        console.log('this is else ' + newexp)
       }
-      return initvalue
+    },
+    operator: function (newope) {
+      this.calSingleOpe(newope)
+      this.result = this.calculNum
+      console.log(this.result)
     }
   },
   methods: {
@@ -106,11 +110,66 @@ export default {
     },
     typeSingleOpe (data) {
       this.operator = data
-      console.log(this.operator)
+      console.log('单目计算后：' + this.calculNum)
+      // this.s1.push(this.calculNum)
+      // this.exp = ''
+      console.log('单目运算符：' + this.operator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1)
+    },
+    calSingleOpe (ope) {
+      switch (ope) {
+        case '+/-':
+          this.calculNum = this.calculNum * -1
+          break;
+        case '%':
+          this.calculNum = this.calculNum / 100
+          break;
+        case 'x^2':
+          this.calculNum = Math.pow(this.calculNum, 2)
+          break;
+        case 'x^3':
+          this.calculNum = Math.pow(this.calculNum, 3)
+          break;
+        case 'ln':
+          this.calculNum = Math.log(this.calculNum)
+          break;
+        case 'log10':
+          this.calculNum = Math.log(this.calculNum) / Math.log(10)
+          break;
+        case 'AC':
+          this.calculNum = 0
+          this.exp = ''
+          this.s1 = []
+          this.s2 = []
+          this.s3 = []
+          break;
+      }
     },
     typeBiOpe (data) {
       this.operator = data
-      console.log(this.operator)
+      this.s1.push(this.calculNum)
+      this.s2.push(this.operator)
+      this.exp = ''
+      console.log('双目运算符：' + this.operator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1 + 's2的值: ' + this.s2)
+    },
+    changeS2 () {},
+    calculateS3 () {},
+    checkOperator (curOpe, s2Ope) {
+      let index1
+      let index2
+      for (let i in this.signOpe) {
+        if (this.signOpe[i].indexOf(curOpe) > -1) {
+          index1 = i
+          console.log('当前操作符index1为 ' + index1)
+        } else if (this.signOpe[i].indexOf(s2Ope) > -1) {
+          index2 = i
+          console.log('栈顶操作符index2为 ' + index2)
+        }
+      }
+      if (index1 > index2) {
+        return true;
+      } else {
+        return false;
+      }
     },
     typeoperator (opt) {
       // this.operator = opt
@@ -216,24 +275,6 @@ export default {
       // console.log('进行过单双目运算符判断的s1: ' + this.s1)
       // console.log('s2: ' + this.s2)
       // this.exp = ''
-    },
-    checkOperator (curOpe, s2Ope) {
-      let index1
-      let index2
-      for (let i in this.signOpe) {
-        if (this.signOpe[i].indexOf(curOpe) > -1) {
-          index1 = i
-          console.log('当前操作符index1为 ' + index1)
-        } else if (this.signOpe[i].indexOf(s2Ope) > -1) {
-          index2 = i
-          console.log('栈顶操作符index2为 ' + index2)
-        }
-      }
-      if (index1 > index2) {
-        return true;
-      } else {
-        return false;
-      }
     }
   }
 }
