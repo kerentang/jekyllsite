@@ -73,8 +73,9 @@ export default {
       s1: [],
       s2: [],
       s3: [],
-      operator: null,
-      result: null,
+      siOperator: null,
+      biOperator: null,
+      tempCalculNum: null,
       signOpe: [['+', '-'], ['*', '/']],
       nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.'],
       singleOpes: ['+/-', '%', 'x^2', 'x^3', 'ln', 'log10', 'AC'],
@@ -95,17 +96,18 @@ export default {
         console.log('this is else ' + newexp)
       }
     },
-    operator: function (newope) {
-      if (this.singleOpes.indexOf(newope)) {
-        this.calSingleOpe(newope)
-        this.result = this.calculNum
-        console.log('this is if ' + this.result)
-        this.s1.push(this.result)
-        this.result = 0
-      } else {
-        this.s2.push(newope)
-        console.log('双目运算符：' + this.operator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1 + 's2的值: ' + this.s2)
-      }
+    siOperator: function (newope) {
+      this.calSingleOpe(newope)
+      this.tempCalculNum = this.calculNum
+      // this.exp = '' + this.tempCalculNum
+      console.log('this is if tempCalculNum ' + this.tempCalculNum)
+      // this.s1.push(this.tempCalculNum)
+      console.log('单目运算符：' + this.siOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1)
+    },
+    biOperator: function (newope) {
+      this.s2.push(newope)
+      this.exp = ''
+      console.log('双目运算符：' + this.biOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1 + 's2的值: ' + this.s2)
     }
   },
   methods: {
@@ -118,10 +120,9 @@ export default {
       console.log(this.exp)
     },
     typeSingleOpe (data) {
-      this.operator = data
+      this.siOperator = data
       // this.s1.push(this.calculNum)
       // this.exp = ''
-      console.log('单目运算符：' + this.operator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1)
     },
     calSingleOpe (ope) {
       switch (ope) {
@@ -145,6 +146,7 @@ export default {
           break;
         case 'AC':
           this.exp = ''
+          this.calculNum = 0
           this.s1 = []
           this.s2 = []
           this.s3 = []
@@ -152,14 +154,14 @@ export default {
       }
     },
     typeBiOpe (data) {
-      this.operator = data
+      this.biOperator = data
       // this.s1.push(this.calculNum)
       // this.s2.push(this.operator)
       // this.exp = ''
     },
     checkS2 () {},
     calculateS3 () {},
-    checkOperator (curOpe, s2Ope) {
+    checkBiOperator (curOpe, s2Ope) {
       let index1
       let index2
       for (let i in this.signOpe) {
