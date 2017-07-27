@@ -96,14 +96,6 @@ export default {
         console.log('this is else ' + newexp)
       }
     },
-    siOperator: function (newope) {
-      this.calSingleOpe(newope)
-      this.tempCalculNum = this.calculNum
-      // this.exp = '' + this.tempCalculNum
-      console.log('this is if tempCalculNum ' + this.tempCalculNum)
-      // this.s1.push(this.tempCalculNum)
-      console.log('单目运算符：' + this.siOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1)
-    },
     biOperator: function (newope) {
       this.s2.push(newope)
       this.exp = ''
@@ -121,6 +113,11 @@ export default {
     },
     typeSingleOpe (data) {
       this.siOperator = data
+      this.calSingleOpe(this.siOperator)
+      this.tempCalculNum = this.calculNum
+      console.log('this is if tempCalculNum ' + this.tempCalculNum)
+      this.s1.push(this.tempCalculNum)
+      console.log('单目运算符：' + this.siOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1)
       // this.s1.push(this.calculNum)
       // this.exp = ''
     },
@@ -158,6 +155,8 @@ export default {
       // this.s1.push(this.calculNum)
       // this.s2.push(this.operator)
       // this.exp = ''
+    },
+    changeS1 () {
     },
     checkS2 () {},
     calculateS3 () {},
