@@ -74,7 +74,7 @@ export default {
       s2: [],
       s3: [],
       operator: null,
-      result: '',
+      result: null,
       signOpe: [['+', '-'], ['*', '/']],
       nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.'],
       singleOpes: ['+/-', '%', 'x^2', 'x^3', 'ln', 'log10', 'AC'],
@@ -84,19 +84,28 @@ export default {
   watch: {
     exp: function (newexp) {
       let reg = /^\d+(?:\.\d)?$/g
-      this.calculNum = parseFloat(newexp)
       if (reg.test(newexp)) {
         this.calculNum = parseFloat(newexp)
         console.log('this is if ' + newexp)
+      } else if (newexp === '') {
+        this.calculNum = 0
+        console.log('this is else if ' + newexp)
       } else {
         this.calculNum = newexp
         console.log('this is else ' + newexp)
       }
     },
     operator: function (newope) {
-      this.calSingleOpe(newope)
-      this.result = this.calculNum
-      console.log(this.result)
+      if (this.singleOpes.indexOf(newope)) {
+        this.calSingleOpe(newope)
+        this.result = this.calculNum
+        console.log('this is if ' + this.result)
+        this.s1.push(this.result)
+        this.result = 0
+      } else {
+        this.s2.push(newope)
+        console.log('双目运算符：' + this.operator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1 + 's2的值: ' + this.s2)
+      }
     }
   },
   methods: {
@@ -110,7 +119,6 @@ export default {
     },
     typeSingleOpe (data) {
       this.operator = data
-      console.log('单目计算后：' + this.calculNum)
       // this.s1.push(this.calculNum)
       // this.exp = ''
       console.log('单目运算符：' + this.operator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1)
@@ -136,7 +144,6 @@ export default {
           this.calculNum = Math.log(this.calculNum) / Math.log(10)
           break;
         case 'AC':
-          this.calculNum = 0
           this.exp = ''
           this.s1 = []
           this.s2 = []
@@ -146,12 +153,11 @@ export default {
     },
     typeBiOpe (data) {
       this.operator = data
-      this.s1.push(this.calculNum)
-      this.s2.push(this.operator)
-      this.exp = ''
-      console.log('双目运算符：' + this.operator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1 + 's2的值: ' + this.s2)
+      // this.s1.push(this.calculNum)
+      // this.s2.push(this.operator)
+      // this.exp = ''
     },
-    changeS2 () {},
+    checkS2 () {},
     calculateS3 () {},
     checkOperator (curOpe, s2Ope) {
       let index1
