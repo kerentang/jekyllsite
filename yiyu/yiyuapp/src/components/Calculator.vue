@@ -95,12 +95,17 @@ export default {
         this.calculNum = newexp
         console.log('this is else ' + newexp)
       }
-    },
-    biOperator: function (newope) {
-      this.s2.push(newope)
-      this.exp = ''
-      console.log('双目运算符：' + this.biOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1 + 's2的值: ' + this.s2)
     }
+    // biOperator: function (newope, oldope) {
+    //   if (this.checkS2(this.s2)) {
+
+    //   } else {
+
+    //   }
+    //   this.s2.push(newope)
+    //   this.exp = ''
+    //   console.log('双目运算符：' + this.biOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1 + 's2的值: ' + this.s2)
+    // }
   },
   methods: {
     typeExp (data) {
@@ -116,7 +121,7 @@ export default {
       this.calSingleOpe(this.siOperator)
       this.tempCalculNum = this.calculNum
       console.log('this is if tempCalculNum ' + this.tempCalculNum)
-      this.s1.push(this.tempCalculNum)
+      // this.s1.push(this.tempCalculNum)
       console.log('单目运算符：' + this.siOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1)
       // this.s1.push(this.calculNum)
       // this.exp = ''
@@ -152,9 +157,14 @@ export default {
     },
     typeBiOpe (data) {
       this.biOperator = data
-      // this.s1.push(this.calculNum)
-      // this.s2.push(this.operator)
-      // this.exp = ''
+      this.s1.push(this.calculNum)
+      this.exp = ''
+      if (this.checkS2(this.s2)) {
+      } else {
+      }
+      this.s2.push(data)
+      this.exp = ''
+      console.log('双目运算符：' + this.biOperator + ', 计算框里的值：' + this.calculNum + ', s1的值: ' + this.s1 + ', s2的值: ' + this.s2)
     },
     changeS1 () {
     },
