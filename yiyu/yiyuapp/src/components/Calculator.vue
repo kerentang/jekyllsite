@@ -96,16 +96,6 @@ export default {
         console.log('this is else ' + newexp)
       }
     }
-    // biOperator: function (newope, oldope) {
-    //   if (this.checkS2(this.s2)) {
-
-    //   } else {
-
-    //   }
-    //   this.s2.push(newope)
-    //   this.exp = ''
-    //   console.log('双目运算符：' + this.biOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1 + 's2的值: ' + this.s2)
-    // }
   },
   methods: {
     typeExp (data) {
@@ -120,11 +110,9 @@ export default {
       this.siOperator = data
       this.calSingleOpe(this.siOperator)
       this.tempCalculNum = this.calculNum
+      this.exp = '' + this.calculNum
       console.log('this is if tempCalculNum ' + this.tempCalculNum)
-      // this.s1.push(this.tempCalculNum)
       console.log('单目运算符：' + this.siOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1)
-      // this.s1.push(this.calculNum)
-      // this.exp = ''
     },
     calSingleOpe (ope) {
       switch (ope) {
@@ -158,17 +146,31 @@ export default {
     typeBiOpe (data) {
       this.biOperator = data
       this.s1.push(this.calculNum)
-      this.exp = ''
-      if (this.checkS2(this.s2)) {
-      } else {
-      }
-      this.s2.push(data)
+      this.checkS2(data)
       this.exp = ''
       console.log('双目运算符：' + this.biOperator + ', 计算框里的值：' + this.calculNum + ', s1的值: ' + this.s1 + ', s2的值: ' + this.s2)
     },
-    changeS1 () {
+    checkS1 () {
     },
-    checkS2 () {},
+    checkS2 (curOpe) {
+      if (this.s2.length === 0) {
+        this.s2.push(curOpe)
+        console.log('s2长度为0是push进来的 ' + this.s2)
+      } else {
+        let s2TopOpe = this.s2[this.s2.length - 1]
+        if (this.checkBiOperator(curOpe, s2TopOpe)) {
+          this.s2.push(curOpe)
+          console.log('这是s2长度不为0且当前优先级大于栈顶操作符时的s2 ' + this.s2)
+        } else {
+          while (!this.checkBiOperator(curOpe, s2TopOpe) && this.s2.length !== 0) {
+            this.s1.push(this.s2.pop())
+            console.log('这是s2长度不为0且当前优先级小于栈顶操作符时的s2 ' + this.s2)
+          }
+          this.s2.push(curOpe)
+          console.log('这是已经判断过优先级的s2 ' + this.s2)
+        }
+      }
+    },
     calculateS3 () {},
     checkBiOperator (curOpe, s2Ope) {
       let index1
@@ -253,45 +255,6 @@ export default {
       //       this.calculNum = total
       //     }
       //   }
-      //   console.log('这是最终的结果: ' + this.total)
-      // } else {
-      //   switch (this.operator) {
-      //     case 'clear':
-      //       this.calculNum = 0
-      //       this.exp = ''
-      //       this.s1 = []
-      //       this.s2 = []
-      //       this.s3 = []
-      //       this.operator = null
-      //       break;
-      //     case 'toggleminus':
-      //       this.calculNum = (-1) * this.calculNum
-      //       break;
-      //     case 'percentage':
-      //       this.calculNum = this.calculNum / 100
-      //       break;
-      //     case 'power2':
-      //       this.calculNum = Math.pow(this.calculNum, 2)
-      //       break;
-      //     case 'cube':
-      //       this.calculNum = Math.pow(this.calculNum, 3)
-      //       break;
-      //     case 'ln':
-      //       this.calculNum = Math.log(this.calculNum)
-      //       break;
-      //     case 'log10':
-      //       this.calculNum = Math.log(this.calculNum) / Math.log(10)
-      //       break;
-      //   }
-      //   // this.total = this.calculNum
-      //   this.calculNum = this.calculNum
-      //   this.s1.push(this.calculNum)
-      // }
-      // // this.total = this.calculNum
-      // // this.s1.push(this.calculNum)
-      // console.log('进行过单双目运算符判断的s1: ' + this.s1)
-      // console.log('s2: ' + this.s2)
-      // this.exp = ''
     }
   }
 }
