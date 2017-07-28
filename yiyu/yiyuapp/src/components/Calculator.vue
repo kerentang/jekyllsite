@@ -26,6 +26,7 @@
     <el-row type="flex" justify="center">
         <input-bi-operator :value='biOpe' v-for="biOpe in biOpes" :key='biOpe' v-on:getBiOpe='typeBiOpe'>
         </input-bi-operator>
+        <button v-on:click='calculateResult'>=</button>
     </el-row>
   </el-row>
 </template>
@@ -148,23 +149,34 @@ export default {
       if (this.biOperator !== '(') {
         this.s1.push(this.calculNum)
       }
-      this.checkS2(data)
+      this.pushBiopeToS2(data)
       this.exp = ''
       console.log('双目运算符：' + this.biOperator + ', 计算框里的值：' + this.calculNum + ', s1的值: ' + this.s1 + ', s2的值: ' + this.s2)
     },
-    checkS1 () {
+    pushBiopeToS2 (curOpe) {
+      if (curOpe === '(') {
+        this.s2.push(curOpe)
+      } else if (curOpe === ')') {
+        while (this.s2[this.s2.length - 1] !== '(' && this.s2.length !== 0) {
+          this.s1.push(this.s2.pop())
+          console.log('当前操作符是右括号时将s2中的操作符出栈加到s1中，直到遇到左括号，此时s2: ' + this.s2)
+        }
+        this.s2.pop()
+      } else {
+        this.checkBiOpe(curOpe)
+      }
     },
-    checkS2 (curOpe) {
+    checkBiOpe (curOpe) {
       if (this.s2.length === 0) {
         this.s2.push(curOpe)
         console.log('s2长度为0是push进来的 ' + this.s2)
       } else {
         let s2TopOpe = this.s2[this.s2.length - 1]
-        if (this.checkBiOperator(curOpe, s2TopOpe)) {
+        if (this.checkBiOpeIndex(curOpe, s2TopOpe)) {
           this.s2.push(curOpe)
           console.log('这是s2长度不为0且当前优先级大于栈顶操作符时的s2 ' + this.s2)
         } else {
-          while (!this.checkBiOperator(curOpe, s2TopOpe) && this.s2.length !== 0) {
+          while (!this.checkBiOpeIndex(curOpe, s2TopOpe) && this.s2.length !== 0) {
             this.s1.push(this.s2.pop())
             console.log('这是s2长度不为0且当前优先级小于栈顶操作符时的s2 ' + this.s2)
           }
@@ -174,7 +186,13 @@ export default {
       }
     },
     calculateS3 () {},
-    checkBiOperator (curOpe, s2Ope) {
+    calculateResult () {
+      while (this.s2.length !== 0) {
+        this.s1.push(this.s2.pop())
+      }
+      console.log('equaltos1: ' + this.s1 + ', 此时的s2：' + this.s2)
+    },
+    checkBiOpeIndex (curOpe, s2Ope) {
       let index1
       let index2
       for (let i in this.signOpe) {
