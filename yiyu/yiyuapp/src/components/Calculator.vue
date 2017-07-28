@@ -71,12 +71,12 @@ export default {
     return {
       calculNum: 0,
       exp: '',
+      flag: false,
       s1: [],
       s2: [],
       s3: [],
       siOperator: null,
       biOperator: null,
-      tempCalculNum: null,
       signOpe: ['(', ['+', '-'], ['*', '/'], ')'],
       nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.'],
       singleOpes: ['+/-', '%', 'x^2', 'x^3', 'ln', 'log10', 'AC'],
@@ -88,18 +88,16 @@ export default {
       let reg = /^\d+(?:\.\d)?$/g
       if (reg.test(newexp)) {
         this.calculNum = parseFloat(newexp)
-        console.log('this is if ' + newexp)
       } else if (newexp === '') {
         this.calculNum = 0
-        console.log('this is else if ' + newexp)
       } else {
         this.calculNum = newexp
-        console.log('this is else ' + newexp)
       }
     }
   },
   methods: {
     typeExp (data) {
+      this.checkFlag()
       if (this.s3.length !== 0) {
         this.exp = ''
         this.s1.push(this.s3.pop())
@@ -115,10 +113,8 @@ export default {
     typeSingleOpe (data) {
       this.siOperator = data
       this.calSingleOpe(this.siOperator)
-      this.tempCalculNum = this.calculNum
       this.exp = '' + this.calculNum
-      console.log('this is if tempCalculNum ' + this.tempCalculNum)
-      console.log('单目运算符：' + this.siOperator + '计算框里的值：' + this.calculNum + 's1的值: ' + this.s1)
+      this.flag = true
     },
     calSingleOpe (ope) {
       switch (ope) {
@@ -150,13 +146,13 @@ export default {
       }
     },
     typeBiOpe (data) {
+      this.flag = false
       this.biOperator = data
       if (this.biOperator !== '(') {
         this.s1.push(this.calculNum)
       }
       this.pushBiopeToS2(data)
       this.exp = ''
-      console.log('双目运算符：' + this.biOperator + ', 计算框里的值：' + this.calculNum + ', s1的值: ' + this.s1 + ', s2的值: ' + this.s2)
     },
     pushBiopeToS2 (curOpe) {
       if (curOpe === '(') {
@@ -164,7 +160,6 @@ export default {
       } else if (curOpe === ')') {
         while (this.s2[this.s2.length - 1] !== '(' && this.s2.length !== 0) {
           this.s1.push(this.s2.pop())
-          console.log('当前操作符是右括号时将s2中的操作符出栈加到s1中，直到遇到左括号，此时s2: ' + this.s2)
         }
         this.s2.pop()
       } else {
@@ -174,31 +169,24 @@ export default {
     checkBiOpe (curOpe) {
       if (this.s2.length === 0) {
         this.s2.push(curOpe)
-        console.log('s2长度为0是push进来的 ' + this.s2)
       } else {
         let s2TopOpe = this.s2[this.s2.length - 1]
         if (this.checkBiOpeIndex(curOpe, s2TopOpe)) {
           this.s2.push(curOpe)
-          console.log('这是s2长度不为0且当前优先级大于栈顶操作符时的s2 ' + this.s2)
         } else {
           while (!this.checkBiOpeIndex(curOpe, s2TopOpe) && this.s2.length !== 0) {
             this.s1.push(this.s2.pop())
-            console.log('这是s2长度不为0且当前优先级小于栈顶操作符时的s2 ' + this.s2)
           }
           this.s2.push(curOpe)
-          console.log('这是已经判断过优先级的s2 ' + this.s2)
         }
       }
     },
     calculateS3 () {
-      console.log('calculates3: ' + this.s1)
       for (let item of this.s1) {
         if (/\d+/.test(item)) {
           this.s3.push(item)
-          console.log('this is if s3: ' + this.s3)
         } else {
           this.popS3(item)
-          console.log('this is else s3: ' + this.s3)
         }
       }
     },
@@ -220,26 +208,26 @@ export default {
           temp = left / right
           break;
       }
-      console.log('popS3的temp: ' + temp)
       this.s3.push(temp)
-      console.log('popS3的s3: ' + this.s3)
     },
     calculateResult () {
+      this.flag = true
       if (this.biOperator !== ')') {
         this.s1.push(this.calculNum)
       }
       while (this.s2.length !== 0) {
         this.s1.push(this.s2.pop())
       }
-      console.log('equaltos1: ' + this.s1 + ', 此时的s2：' + this.s2)
       this.calculateS3()
-      if (this.s3.length === 1) {
-        this.exp = '' + this.s3[0]
-      } else {
-        this.exp = '' + this.s3.pop()
-      }
+      this.exp = '' + this.s3[0]
       this.s1 = []
-      console.log('results1: ' + this.s1 + 'results3: ' + this.s3 + 'resultexp: ' + this.exp)
+      this.s3 = []
+    },
+    checkFlag () {
+      if (this.flag === true) {
+        this.exp = ''
+        this.flag = !this.flag
+      }
     },
     checkBiOpeIndex (curOpe, s2Ope) {
       let index1
@@ -247,10 +235,8 @@ export default {
       for (let i in this.signOpe) {
         if (this.signOpe[i].indexOf(curOpe) > -1) {
           index1 = i
-          console.log('当前操作符index1为 ' + index1)
         } else if (this.signOpe[i].indexOf(s2Ope) > -1) {
           index2 = i
-          console.log('栈顶操作符index2为 ' + index2)
         }
       }
       if (index1 > index2) {
