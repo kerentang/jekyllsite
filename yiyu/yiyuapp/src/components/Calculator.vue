@@ -76,10 +76,10 @@ export default {
       siOperator: null,
       biOperator: null,
       tempCalculNum: null,
-      signOpe: [['+', '-'], ['*', '/']],
+      signOpe: ['(', ['+', '-'], ['*', '/'], ')'],
       nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.'],
       singleOpes: ['+/-', '%', 'x^2', 'x^3', 'ln', 'log10', 'AC'],
-      biOpes: ['(', ')', '+', '-', '*', '/', '=']
+      biOpes: ['(', ')', '+', '-', '*', '/']
     }
   },
   watch: {
@@ -145,7 +145,9 @@ export default {
     },
     typeBiOpe (data) {
       this.biOperator = data
-      this.s1.push(this.calculNum)
+      if (this.biOperator !== '(') {
+        this.s1.push(this.calculNum)
+      }
       this.checkS2(data)
       this.exp = ''
       console.log('双目运算符：' + this.biOperator + ', 计算框里的值：' + this.calculNum + ', s1的值: ' + this.s1 + ', s2的值: ' + this.s2)
