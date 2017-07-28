@@ -85,7 +85,7 @@ export default {
   },
   watch: {
     exp: function (newexp) {
-      let reg = /^\d+(?:\.\d)?$/g
+      let reg = /^\d+(?:\.[1,9])?$/g
       if (reg.test(newexp)) {
         this.calculNum = parseFloat(newexp)
       } else if (newexp === '') {
@@ -108,7 +108,6 @@ export default {
       } else {
         this.exp += data
       }
-      console.log(this.exp)
     },
     typeSingleOpe (data) {
       this.siOperator = data
