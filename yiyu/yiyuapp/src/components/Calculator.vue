@@ -100,6 +100,11 @@ export default {
   },
   methods: {
     typeExp (data) {
+      if (this.s3.length !== 0) {
+        this.exp = ''
+        this.s1.push(this.s3.pop())
+        this.s3 = []
+      }
       if (this.exp.indexOf('.') > -1 && data === '.') {
         this.exp = this.exp
       } else {
@@ -228,7 +233,13 @@ export default {
       }
       console.log('equaltos1: ' + this.s1 + ', 此时的s2：' + this.s2)
       this.calculateS3()
-      this.calculNum = this.s3[0]
+      if (this.s3.length === 1) {
+        this.exp = '' + this.s3[0]
+      } else {
+        this.exp = '' + this.s3.pop()
+      }
+      this.s1 = []
+      console.log('results1: ' + this.s1 + 'results3: ' + this.s3 + 'resultexp: ' + this.exp)
     },
     checkBiOpeIndex (curOpe, s2Ope) {
       let index1
@@ -265,7 +276,8 @@ export default {
   background-color: #fff;
   box-sizing: border-box;
   outline: none;
-  border: none;
+  border: 1px solid #e78b53;
+  border-radius: 5px;
 }
 .el-row{
   margin: 5px;
