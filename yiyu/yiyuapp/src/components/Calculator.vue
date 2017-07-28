@@ -185,12 +185,50 @@ export default {
         }
       }
     },
-    calculateS3 () {},
+    calculateS3 () {
+      console.log('calculates3: ' + this.s1)
+      for (let item of this.s1) {
+        if (/\d+/.test(item)) {
+          this.s3.push(item)
+          console.log('this is if s3: ' + this.s3)
+        } else {
+          this.popS3(item)
+          console.log('this is else s3: ' + this.s3)
+        }
+      }
+    },
+    popS3 (biope) {
+      let right = parseFloat(this.s3.pop())
+      let left = parseFloat(this.s3.pop())
+      let temp
+      switch (biope) {
+        case '+':
+          temp = left + right
+          break;
+        case '-':
+          temp = left - right
+          break;
+        case '*':
+          temp = left * right
+          break;
+        case '/':
+          temp = left / right
+          break;
+      }
+      console.log('popS3的temp: ' + temp)
+      this.s3.push(temp)
+      console.log('popS3的s3: ' + this.s3)
+    },
     calculateResult () {
+      if (this.biOperator !== ')') {
+        this.s1.push(this.calculNum)
+      }
       while (this.s2.length !== 0) {
         this.s1.push(this.s2.pop())
       }
       console.log('equaltos1: ' + this.s1 + ', 此时的s2：' + this.s2)
+      this.calculateS3()
+      this.calculNum = this.s3[0]
     },
     checkBiOpeIndex (curOpe, s2Ope) {
       let index1
@@ -209,72 +247,6 @@ export default {
       } else {
         return false;
       }
-    },
-    typeoperator (opt) {
-      // this.operator = opt
-      // if (this.operator === '+' || this.operator === '-' || this.operator === '*' || this.operator === '/') {
-      //   if (this.s2.length === 0) {
-      //     this.s2.push(this.operator)
-      //     console.log('s2长度为0是push进来的 ' + this.s2)
-      //   } else {
-      //     let curOpe = this.operator
-      //     let s2TopOpe = this.s2[this.s2.length - 1]
-      //     if (this.checkOperator(curOpe, s2TopOpe)) {
-      //       this.s2.push(curOpe)
-      //       console.log('这是s2长度不为0且当前优先级大于栈顶操作符时的s2 ' + this.s2)
-      //     } else {
-      //       while (!this.checkOperator(curOpe, s2TopOpe) && this.s2.length !== 0) {
-      //         this.s1.push(this.s2.pop())
-      //         console.log('这是s2长度不为0且当前优先级小于栈顶操作符时的s2 ' + this.s2)
-      //       }
-      //       this.s2.push(curOpe)
-      //       console.log('这是已经判断过优先级的s2 ' + this.s2)
-      //     }
-      //   }
-      // } else if (this.operator === '=') {
-      //   this.s2 = []
-      //   this.exp = ''
-      //   this.s1.push(this.calculNum)
-      //   for (let i = 0; i < this.s1.length; i++) {
-      //     if (/\d+/.test(parseFloat(this.s1[i]))) {
-      //       this.s3.push(parseFloat(this.s1[i]))
-      //       console.log('这是s1队列中的数字 ' + this.s3[i])
-      //     } else {
-      //       switch (this.s1[i]) {
-      //         case '+':
-      //           this.s3.push(parseFloat(this.s3.pop()) + parseFloat(this.s3.pop()))
-      //           break;
-      //         case '-':
-      //           this.s3.push(parseFloat(this.s3.pop()) - parseFloat(this.s3.pop()))
-      //           break;
-      //         case '*':
-      //           this.s3.push(parseFloat(this.s3.pop()) * parseFloat(this.s3.pop()))
-      //           break;
-      //         case '/':
-      //           this.s3.push(parseFloat(this.s3.pop()) / parseFloat(this.s3.pop()))
-      //           break;
-      //       }
-      //       console.log('这是双目运算后的s3: ' + this.s3)
-      //       console.log('这是运算 ' + this.s3[i])
-      //     }
-      //   }
-      //   this.s1 = []
-      //   if (this.s3.length === 1) {
-      //     if (isNaN(this.s3[0])) {
-      //       this.$message('非法操作！')
-      //       this.s3 = []
-      //     } else {
-      //       this.calculNum = this.s3[0]
-      //     }
-      //   } else {
-      //     let total = this.s3[0] + this.s3[1]
-      //     if (isNaN(this.s3[0])) {
-      //       this.$message('非法操作！')
-      //       this.s3 = []
-      //     } else {
-      //       this.calculNum = total
-      //     }
-      //   }
     }
   }
 }
