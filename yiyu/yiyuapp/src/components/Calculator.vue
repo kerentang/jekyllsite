@@ -40,7 +40,6 @@ export default {
       template: '<button v-on:click="getNum(value)">{{value}}</button>',
       methods: {
         getNum: function (value) {
-          console.log(value)
           this.$emit('getNum', value)
         }
       }
@@ -50,8 +49,6 @@ export default {
       template: '<button v-on:click="getSingleOpe(value)">{{value}}</button>',
       methods: {
         getSingleOpe: function (value) {
-          // this.sop = value
-          console.log(value)
           this.$emit('getSingleOpe', value)
         }
       }
@@ -61,7 +58,6 @@ export default {
       template: '<button v-on:click="getBiOpe(value)">{{value}}</button>',
       methods: {
         getBiOpe: function (value) {
-          console.log(value)
           this.$emit('getBiOpe', value)
         }
       }
@@ -70,14 +66,14 @@ export default {
   data () {
     return {
       calculNum: 0,
-      exp: '',
-      flag: false,
-      s1: [],
-      s2: [],
-      s3: [],
-      siOperator: null,
-      biOperator: null,
-      signOpe: ['(', ['+', '-'], ['*', '/'], ')'],
+      exp: '', // 连接输入的数字和小数点，通过calculNum = parseFloat(exp) 转化成number
+      flag: false, // 输入表达式的过程中用来判断中断输入时的依据：是否按下了=号，是否操作了单目运算
+      s1: [], // 保存逆波兰表达式的栈
+      s2: [], // 临时保存双目运算符的栈
+      s3: [], // 遍历s1计算的值保存到s3中，以及最终的计算结果s3[0]
+      siOperator: null, // 保存当前输入的单目运算符
+      biOperator: null, // 保存当前输入的双目运算符
+      signOpe: ['(', ['+', '-'], ['*', '/'], ')'], // 操作符的有限顺序，从小到大
       nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.'],
       singleOpes: ['+/-', '%', 'x^2', 'x^3', 'ln', 'log10', 'AC'],
       biOpes: ['(', ')', '+', '-', '*', '/']
@@ -98,13 +94,11 @@ export default {
   methods: {
     typeExp (data) {
       this.checkFlag()
-      if (this.s3.length !== 0) {
-        this.exp = ''
-        this.s1.push(this.s3.pop())
-        this.s3 = []
-      }
       if (this.exp.indexOf('.') > -1 && data === '.') {
         this.exp = this.exp
+      } else if (this.exp === '' && data === '.') {
+        this.exp = ''
+        this.$message('请先输入数字！')
       } else {
         this.exp += data
       }
