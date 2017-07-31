@@ -74,7 +74,7 @@ export default {
       s3: [], // 遍历s1计算的值保存到s3中，以及最终的计算结果s3[0]
       siOperator: null, // 保存当前输入的单目运算符
       biOperator: null, // 保存当前输入的双目运算符
-      signOpe: ['(', ['+', '-'], ['*', '/'], ')'], // 操作符的有限顺序，从小到大
+      signOpe: ['(', ['+', '-'], ['*', '/'], ')'], // 操作符的优先顺序，从小到大
       nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.'],
       singleOpes: ['+/-', '%', 'x^2', 'x^3', 'ln', 'log10', 'AC'],
       biOpes: ['(', ')', '+', '-', '*', '/']
@@ -87,7 +87,7 @@ export default {
       if (reg.test(newexp)) {
         this.calculNum = parseFloat(newexp)
       } else if (newexp === '') {
-        // 没有输入数字或者清空输入时exp === ''则 calculNum === 0
+        // 没有输入数字或者清空输入时exp = ''则 calculNum = 0
         this.calculNum = 0
       } else {
         this.calculNum = newexp

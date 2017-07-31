@@ -8,6 +8,7 @@ function resolve (dir) {
 }
 
 module.exports = {
+  cache: true,
   entry: {
     app: './src/main.js'
   },
@@ -43,8 +44,9 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        loader: ['babel-loader?cacheDirectory=true'],
+        include: [resolve('src'), resolve('test')],
+        exclude: [path.resolve('../../node_modules')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
