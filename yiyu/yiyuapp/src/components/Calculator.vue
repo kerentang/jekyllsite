@@ -81,6 +81,7 @@ export default {
     }
   },
   watch: {
+    // 转化exp为calculNum
     exp: function (newexp) {
       // 判断正常结构的exp如2.34等的正则
       let reg = /^\d+(?:\.[1,9])?$/g
@@ -95,6 +96,7 @@ export default {
     }
   },
   methods: {
+    // 连接输入的数字
     typeExp (data) {
       // 判断是否中断了当前输入
       this.checkFlag()
@@ -108,6 +110,7 @@ export default {
         this.exp += data
       }
     },
+    // 输入单目操作符
     typeSingleOpe (data) {
       this.siOperator = data
       this.calSingleOpe(this.siOperator)
@@ -145,6 +148,7 @@ export default {
           break;
       }
     },
+    // 输入双目操作符
     typeBiOpe (data) {
       this.flag = false
       this.lastBiope = this.biOperator
@@ -161,6 +165,7 @@ export default {
       this.pushBiopeToS2(data)
       this.exp = ''
     },
+    // 按照规则将双目操作符存入栈s2中
     pushBiopeToS2 (curOpe) {
       // 操作符是（直接push进s2
       if (curOpe === '(') {
@@ -177,6 +182,7 @@ export default {
         this.checkBiOpe(curOpe)
       }
     },
+    // 当前双目操作符入栈s1/s2
     checkBiOpe (curOpe) {
       if (this.s2.length === 0) {
         this.s2.push(curOpe)
@@ -239,12 +245,14 @@ export default {
       this.s1 = []
       this.s3 = []
     },
+    // 检查中断输入的flag的boolean值
     checkFlag () {
       if (this.flag === true) {
         this.exp = ''
         this.flag = !this.flag
       }
     },
+    // 比较当前操作符和s2栈顶操作符优先级的大小
     checkBiOpeIndex (curOpe, s2Ope) {
       let index1
       let index2
