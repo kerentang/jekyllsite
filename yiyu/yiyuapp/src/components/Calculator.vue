@@ -4,7 +4,7 @@
       <h3>全国中学生第一套普通计算器</h3>
     </el-row>
     <el-row type="flex" justify="center">
-      <el-input type=text v-bind:value="calculNum" readonly>
+      <el-input type=text :value="calculNum" readonly>
         <template slot="prepend">Result = </template>
       </el-input>
     </el-row>
@@ -12,7 +12,7 @@
       <span></span>
     </el-row>
     <el-row type="flex" justify="center">
-        <input-num :value='num' v-for="num in nums" :key='num' v-on:getNum='typeExp'>
+        <input-num :value='num' v-for="num in nums" :key='num' @getNum='typeExp'>
         </input-num>
     </el-row>
     <el-row type="flex" justify="center">
@@ -20,13 +20,13 @@
           :value='singleOpe' 
           v-for="singleOpe in singleOpes" 
           :key='singleOpe' 
-          v-on:getSingleOpe='typeSingleOpe'>
+          @getSingleOpe='typeSingleOpe'>
         </input-single-operator>
     </el-row>
     <el-row type="flex" justify="center">
-        <input-bi-operator :value='biOpe' v-for="biOpe in biOpes" :key='biOpe' v-on:getBiOpe='typeBiOpe'>
+        <input-bi-operator :value='biOpe' v-for="biOpe in biOpes" :key='biOpe' @getBiOpe='typeBiOpe'>
         </input-bi-operator>
-        <button v-on:click='calculateResult'>=</button>
+        <button @click='calculateResult'>=</button>
     </el-row>
   </el-row>
 </template>
@@ -37,7 +37,7 @@ export default {
   components: {
     'input-num': {
       props: ['value'],
-      template: '<button v-on:click="getNum(value)">{{value}}</button>',
+      template: '<button @click="getNum(value)">{{value}}</button>',
       methods: {
         getNum: function (value) {
           this.$emit('getNum', value)
@@ -46,7 +46,7 @@ export default {
     },
     'input-single-operator': {
       props: ['value'],
-      template: '<button v-on:click="getSingleOpe(value)">{{value}}</button>',
+      template: '<button @click="getSingleOpe(value)">{{value}}</button>',
       methods: {
         getSingleOpe: function (value) {
           this.$emit('getSingleOpe', value)
@@ -55,7 +55,7 @@ export default {
     },
     'input-bi-operator': {
       props: ['value'],
-      template: '<button v-on:click="getBiOpe(value)">{{value}}</button>',
+      template: '<button @click="getBiOpe(value)">{{value}}</button>',
       methods: {
         getBiOpe: function (value) {
           this.$emit('getBiOpe', value)
