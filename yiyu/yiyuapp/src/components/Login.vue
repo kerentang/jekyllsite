@@ -2,7 +2,7 @@
   <el-row class='content'>
     <el-col :xs='24' :sm="{span:6,offset:9}">
       <img src='../assets/ducks.png'>
-      <h1>探寻日常中的奇迹</h1>
+      <h1>探寻日常的奇迹</h1>
     <el-row>
           <el-input v-model="account" placeholder='账号' type='text'>
           </el-input>
