@@ -14,6 +14,12 @@
   },
   "dependencies": {
     "element-ui": "^1.4.1",
+    "koa": "^2.3.0",
+    "koa-jwt": "^3.2.2",
+    "koa-router": "^7.2.1",
+    "koa-static": "^4.0.1",
+    "mysql": "^2.14.1",
+    "sequelize": "^4.4.2",
     "vue": "^2.3.3",
     "vue-router": "^2.3.1",
     "vuex": "^2.3.1"
@@ -87,7 +93,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/kerentang/personal-project"
-},
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
