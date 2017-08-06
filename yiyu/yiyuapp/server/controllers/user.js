@@ -1,5 +1,6 @@
 const user = require('../models/user.js')
 const jwt = require('koa-jwt')
+// const bcrypt = require('brcyptjs')
 
 const getUserInfo = async function (ctx) {
   const id = ctx.params.id; // 获取url里传过来的参数里的id

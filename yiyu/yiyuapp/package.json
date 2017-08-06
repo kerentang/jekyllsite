@@ -13,6 +13,8 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
+    "axios": "^0.16.2",
+    "bcryptjs": "^2.4.3",
     "element-ui": "^1.4.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",

@@ -23,9 +23,30 @@ export default {
       password: ''
     }
   },
+  computed: {},
   methods: {
     loginYiYu () {
-      this.$router.push('/calculate')
+      let obj = {
+        name: this.account,
+        password: this.password
+      }
+      this.$http.post('/auth/user', obj)
+        .then((res) => {
+          if (res.data.success) {
+            sessionStorage.setItem('calculator-token', res.data.token)
+            this.$message({
+              type: 'success',
+              message: '登录成功！'
+            })
+            this.$router.push('/calculate')
+          } else {
+            this.message.error(res.data.info)
+            sessionStorage.setItem('calculator-token', null)
+          }
+        }, (err) => {
+          this.$message.error('请求错误' + err)
+          sessionStorage.setItem('calculator-token', null)
+        })
     }
   }
 }
