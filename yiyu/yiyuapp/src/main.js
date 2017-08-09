@@ -11,7 +11,21 @@ Vue.prototype.$http = Axios
 
 Vue.use(ElementUI) // 全局使用
 Vue.config.productionTip = false
-
+router.beforeEach((to, from, next) => {
+  const token = sessionStorage.getItem('calculator-token')
+  if (to.path === '/') {
+    if (token !== 'null' && token !== null) {
+      next('/calculate')
+    }
+    next()
+  } else {
+    if (token !== 'null' && token !== null) {
+      next()
+    } else {
+      next('/')
+    }
+  }
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
