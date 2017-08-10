@@ -5,6 +5,9 @@ const json = require('koa-json')
 const logger = require('koa-logger')
 const auth = require('./server/routes/auth.js')
 const bodyparser = require('koa-bodyparser')
+const path = require('path')
+const server = require('koa-static')
+const historyApiFallback = require('koa-history-api-fallback')
 
 app.use(bodyparser())
 app.use(json())
@@ -37,10 +40,12 @@ app.use(async function (ctx, next) {  //  如果JWT验证失败，返回验证�
 app.on('error', function (err, ctx) {
   console.log(`server error`, err)
 })
+
 router.use('/auth', auth.routes())
 
 app.use(router.routes()).use(router.allowedMethods())
-
+app.use(historyApiFallback())
+app.use(server(path.resolve('dist')))
 app.listen(8889, () => {
   console.log('koa is listening in 8889')
 })

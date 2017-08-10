@@ -20,6 +20,8 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     if (token !== 'null' && token !== null) {
+      // 全局设定header的token验证
+      Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token
       next()
     } else {
       next('/')
